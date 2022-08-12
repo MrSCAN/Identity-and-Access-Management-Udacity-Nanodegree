@@ -97,6 +97,7 @@ def add_drink(payload):
 @requires_auth('patch:drinks')
 def update_drink(payload, id):
     
+    response = []
     body = request.get_json()
     title = body["title"]
     drink = Drink.query.filter(Drink.id == id).one_or_none()
@@ -105,7 +106,8 @@ def update_drink(payload, id):
     drink.title = title
     try:
         drink.update()
-        return jsonify({"success": True, "drinks": drink.long()})
+        response.append(drink.long())
+        return jsonify({"success": True, "drinks": response})
     except:
         abort(400)
 
